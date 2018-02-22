@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  kafka:
+    environment:
+      LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+  examples:
+    image: "alpine:3.7"
+    entrypoint: |
+      tail -f /dev/null
+    depends_on:
+    - "kafka"
