@@ -29,7 +29,7 @@ services:
 #      KAFKA_CLUSTER: "kafka"
 #      KAFKA_VERSION: "0.11.0.0"
 #    ports:
-#    - 8081:9000
+#    - 8083:9000
 #    depends_on:
 #    - "kafka"
 

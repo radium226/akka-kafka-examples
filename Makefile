@@ -13,8 +13,8 @@ up: down build
 build-zookeeper:
 	docker-compose -p "demo" -f "docker-compose.yml" build "zookeeper"
 
-build-kafka-manager:
-	docker-compose -p "demo" -f "docker-compose.yml" build "kafka-manager"
+#build-kafka-manager:
+#	docker-compose -p "demo" -f "docker-compose.yml" build "kafka-manager"
 
 build-kafka:
 	docker-compose -p "demo" -f "docker-compose.yml" build "kafka"
