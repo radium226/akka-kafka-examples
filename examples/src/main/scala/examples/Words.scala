@@ -12,6 +12,7 @@ import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream._
 import akka.stream.scaladsl._
 import akka.util.ByteString
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 
@@ -58,7 +59,6 @@ object Words extends Logging {
       shouldStop.set(true)
     }
 
-
     Source.fromIterator(wordIterator).mapMaterializedValue({ _ => stop })
   }
 
@@ -78,12 +78,18 @@ object Words extends Logging {
     done
   }
 
-  def consume(topicName: TopicName, handler: Word => Unit = println)(implicit actorMaterializer: ActorMaterializer): Control = {
+  def rules(): Flow[Word, Int, NotUsed] = {
+    Flow[Word].map(_.size)
+  }
+
+  def consume(topicName: TopicName, handler: String => Unit = println)(implicit actorMaterializer: ActorMaterializer): Control = {
     val consumerSettings = ConsumerSettings(actorMaterializer.system, new StringDeserializer, new StringDeserializer)
 
-    val topicSource = Consumer.plainSource(consumerSettings, Subscriptions.topics(topicName))
+    val topicSource: Source[ConsumerRecord[String, String], Control] = Consumer.plainSource(consumerSettings, Subscriptions.topics(topicName))
     val graph = topicSource
         .map(_.value)
+        .via(rules())
+        .map(_.toString)
       .to(Sink.foreach(handler))
 
     info(s"Running graph which consume from ${topicName} topic... ")

@@ -20,16 +20,40 @@ services:
     depends_on:
     - "zookeeper"
 
-  kafka-manager:
-    image: "akka-kafka/kafka-manager"
-    build: "./kafka-manager"
+#  kafka-manager:
+#    image: "akka-kafka/kafka-manager"
+#    build: "./kafka-manager"
+#    environment:
+#      ZOOKEEPER_CONNECT: "zookeeper:2181"
+#      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+#      KAFKA_CLUSTER: "kafka"
+#      KAFKA_VERSION: "0.11.0.0"
+#    ports:
+#    - 8081:9000
+#    depends_on:
+#    - "kafka"
+
+  kafka-rest-proxy:
+    image: "akka-kafka/kafka-rest-proxy"
+    build: "./kafka-rest-proxy"
     environment:
+      SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_CLUSTER: "kafka"
-      KAFKA_VERSION: "0.11.0.0"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
     ports:
-    - 8081:9000
+    - 8082:8082
+    depends_on:
+    - "kafka"
+    - "schema-registry"
+
+  schema-registry:
+    image: "akka-kafka/schema-registry"
+    build: "./schema-registry"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+    ports:
+    - 8081:8081
     depends_on:
     - "kafka"
 
