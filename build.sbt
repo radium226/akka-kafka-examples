@@ -10,7 +10,7 @@ lazy val examples = (project in file("examples"))
     commonSettings,
     name := "akka-kafka-examples",
     version := "0.1",
-    mainClass in (Compile, run) := Some("examples.Show"),
+    mainClass in (Compile, run) := Some("examples.Showcase"),
     assemblyJarName in assembly := "examples.jar",
     libraryDependencies ++= Seq(
       "com.typesafe" % "config" % "1.3.2",

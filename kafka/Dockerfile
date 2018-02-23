@@ -15,7 +15,7 @@ ENV PATH "/sbin:/opt/kafka/bin/:${PATH}"
 
 WORKDIR "/opt/kafka"
 
-EXPOSE 9092
+EXPOSE 9092 9999
 
 COPY ["server.properties.tpl", "/opt/kafka/config/server.properties.tpl"]
 COPY ["log4j.properties.tpl", "/opt/kafka/config/log4j.properties.tpl"]

@@ -20,18 +20,18 @@ services:
     depends_on:
     - "zookeeper"
 
-  #kafka-manager:
-  #  image: "akka-kafka/kafka-manager"
-  #  build: "./kafka-manager"
-  #  environment:
-  #    ZOOKEEPER_CONNECT: "zookeeper:2181"
-  #    KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-  #    KAFKA_CLUSTER: "kafka"
-  #    KAFKA_VERSION: "0.11.0.0"
-  #  ports:
-  #  - 8081:9000
-  #  depends_on:
-  #  - "kafka"
+  kafka-manager:
+    image: "akka-kafka/kafka-manager"
+    build: "./kafka-manager"
+    environment:
+      ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_CLUSTER: "kafka"
+      KAFKA_VERSION: "0.11.0.0"
+    ports:
+    - 8081:9000
+    depends_on:
+    - "kafka"
 
   examples:
     image: "akka-kafka/examples"

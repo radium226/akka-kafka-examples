@@ -23,5 +23,5 @@ down-local:
 	docker-compose -p "akka-kafka" -f "docker-compose.yml" -f "docker-compose.local.yml" down
 
 
-up-local: down-local build-zookeeper build-kafka
+up-local: down-local build-zookeeper build-kafka build-kafka-manager
 	docker-compose -p "akka-kafka" -f "docker-compose.yml" -f "docker-compose.local.yml" up

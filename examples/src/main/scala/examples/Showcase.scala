@@ -37,7 +37,7 @@ object Showcase extends App with Logging {
   val control = Words.consume(topicName, handler = sleepyHandler)
 
   info("Sleeping some time... ")
-  sleep(5 seconds)
+  sleep(15 seconds)
 
   info(s"Stopping consumption from ${topicName}...")
   val consumeDone = control.stop()

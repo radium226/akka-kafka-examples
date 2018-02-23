@@ -3,7 +3,8 @@ version: "3"
 services:
   kafka:
     environment:
-      LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      LOCAL: "yes"
+    #  LISTENERS: "PLAINTEXT://127.0.0.1:9092"
   examples:
     image: "alpine:3.7"
     entrypoint: |

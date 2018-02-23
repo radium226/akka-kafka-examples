@@ -30,7 +30,7 @@ ARG KAFKA_MANAGER_VERSION="1.3.3.16"
 
 COPY --from=0 ["/tmp/kafka-manager/target/universal/kafka-manager-${KAFKA_MANAGER_VERSION}.zip", "/opt/kafka-manager.zip"]
 
-RUN apk add --no-cache --update "bash" "su-exec" "netcat-openbsd" "curl" && \
+RUN apk add --no-cache --update "bash" "gettext" "libintl" "su-exec" "netcat-openbsd" "curl" && \
     unzip "/opt/kafka-manager.zip" -d "/opt/" && \
     rm "/opt/kafka-manager.zip" && \
     mv "/opt/kafka-manager-${KAFKA_MANAGER_VERSION}" "/opt/kafka-manager" && \
@@ -40,6 +40,8 @@ ENV PATH "${PATH}:/opt/kafka-manager/bin"
 WORKDIR "/opt/kafka-manager"
 
 COPY ["entrypoint.sh", "/entrypoint.sh"]
+COPY ["logger.xml.tpl", "/opt/kafka-manager/conf/logger.xml.tpl"]
+COPY ["logback.xml.tpl", "/opt/kafka-manager/conf/logback.xml.tpl"]
 
 EXPOSE 9000
 
