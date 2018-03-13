@@ -1,5 +1,5 @@
 assembly:
-	sbt assembly
+	sbt examples/assembly
 
 build: assembly
 	docker-compose -p "demo" -f "docker-compose.yml" build
@@ -12,6 +12,9 @@ up: down build
 
 build-zookeeper:
 	docker-compose -p "demo" -f "docker-compose.yml" build "zookeeper"
+
+build-examples: assembly
+	docker-compose -p "demo" -f "docker-compose.yml" build "examples"
 
 #build-kafka-manager:
 #	docker-compose -p "demo" -f "docker-compose.yml" build "kafka-manager"

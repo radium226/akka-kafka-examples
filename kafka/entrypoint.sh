@@ -13,10 +13,10 @@ fi
 ADVERTISED_LISTENERS="${ADVERTISED_LISTENERS:-PLAINTEXT://${HOST_HOSTNAME}:9092}" \
 LISTENERS="${LISTENERS:-PLAINTEXT://${GUEST_HOSTNAME}:9092}" \
 AUTO_CREATE_TOPICS="${AUTO_CREATE_TOPICS:-false}" \
-    envsubst <"/opt/kafka/config/server.properties.tpl" >"/opt/kafka/config/server.properties"
+    envsubst <"/opt/confluence/etc/kafka/server.properties.tpl" >"/opt/confluence/etc/kafka/server.properties"
 
 LOG_LEVEL="${LOG_LEVEL:-WARN}" \
-    envsubst <"/opt/kafka/config/log4j.properties.tpl" >"/opt/kafka/config/log4j.properties"
+    envsubst <"/opt/confluence/etc/kafka/log4j.properties.tpl" >"/opt/confluence/etc/kafka/log4j.properties"
 
 KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote.port=9969 -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${HOSTNAME}" \
     su-exec "kafka" "$@"

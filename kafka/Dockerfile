@@ -1,25 +1,20 @@
 FROM openjdk:8-jre-alpine
 
-ARG MIRROR="http://apache.crihan.fr/dist"
-
-ARG KAFKA_VERSION="0.11.0.2"
-ARG SCALA_VERSION="2.12"
-
 RUN apk add --no-cache "wget" "bash" "gettext" "libintl" "su-exec" && \
-    mkdir -p "/opt/kafka" "/tmp/kafka" && \
-    wget -q -O - "${MIRROR}/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" | \
-      tar -xzC "/opt/kafka" --strip-components=1 && \
-    adduser -DH -s "/sbin/nologin" "kafka" && \
-    chown -R "kafka" "/opt/kafka" "/tmp/kafka"
-ENV PATH "/sbin:/opt/kafka/bin/:${PATH}"
+    mkdir -p "/opt/confluence" "/tmp/confluence" && \
+    wget -q -O - "http://packages.confluent.io/archive/4.0/confluent-oss-4.0.0-2.11.tar.gz" | \
+      tar -xzC "/opt/confluence" --strip-components=1 && \
+    adduser -DH -s "/sbin/nologin" "confluence" && \
+    chown -R "confluence" "/opt/confluence" "/tmp/confluence"
+ENV PATH "/sbin:/opt/confluence/bin/:${PATH}"
 
-WORKDIR "/opt/kafka"
+WORKDIR "/opt/confluence"
 
-EXPOSE 9092 9999
+EXPOSE 8082
 
-COPY ["server.properties.tpl", "/opt/kafka/config/server.properties.tpl"]
-COPY ["log4j.properties.tpl", "/opt/kafka/config/log4j.properties.tpl"]
+COPY ["server.properties.tpl", "/opt/confluence/etc/kafka/server.properties.tpl"]
+COPY ["log4j.properties.tpl", "/opt/confluence/etc/kafka/log4j.properties.tpl"]
 COPY ["entrypoint.sh", "/entrypoint.sh"]
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["kafka-server-start.sh", "/opt/kafka/config/server.properties"]
+CMD ["/opt/confluence/bin/kafka-server-start", "/opt/confluence/etc/kafka/server.properties"]

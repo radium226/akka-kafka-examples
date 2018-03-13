@@ -5,9 +5,19 @@ services:
     environment:
       LOCAL: "yes"
     #  LISTENERS: "PLAINTEXT://127.0.0.1:9092"
-  examples:
+
+  producer:
     image: "alpine:3.7"
     entrypoint: |
       tail -f /dev/null
     depends_on:
     - "kafka"
+    - "schema-registry"
+
+  consumer:
+    image: "alpine:3.7"
+    entrypoint: |
+      tail -f /dev/null
+    depends_on:
+    - "kafka"
+    - "schema-registry"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+build_docker_images()
+{
+    sbt "clean"
+    declare project=
+    for project in "producer" "consumer"; do
+        sbt "${project}/assembly"
+        cd "${project}"
+        docker build -t "examples/${project}:latest" "."
+        cd -
+    done
+}
+
+main()
+{
+    declare action="${1}" ; shift
+    case "${action}" in
+        "build-docker-images")
+                build_docker_images "${@}"
+            ;;
+
+    esac
+}
+
+main "${@}"

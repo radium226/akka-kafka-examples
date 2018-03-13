@@ -1,0 +1,67 @@
+#!/bin/bash
+
+set -e
+
+build_docker_images()
+{
+    docker-compose -p "examples" -f "docker-compose.yml" build
+    cd "./examples"
+    ./please build-docker-images
+    cd -
+}
+
+up_local()
+{
+    docker-compose -p "examples" -f "docker-compose.yml" -f "docker-compose.local.yml" up
+}
+
+down_local()
+{
+    docker-compose -p "examples" -f "docker-compose.yml" -f "docker-compose.local.yml" down
+}
+
+publish_local_akka_stream_kafka()
+{
+  cd "./reactive-kafka"
+  git pull
+  sbt "core/publishLocal"
+  cd -
+}
+
+consume_kafka()
+{
+  declare topic_name="${1}"
+  docker-compose -p "examples" exec "kafka" /bin/bash -c '/opt/confluence/bin/kafka-avro-console-consumer \
+    --bootstrap-server "kafka:9092" \
+    --property "schema.registry.url=${SCHEMA_REGISTRY_URL}" \
+    --topic "${0}" \
+    --from-beginning' "${topic_name}"
+}
+
+main()
+{
+    declare action="${1}" ; shift
+    case "${action}" in
+        "build-docker-images")
+                build_docker_images "${@}"
+            ;;
+
+        "up-local")
+                up_local "${@}"
+            ;;
+
+        "down-local")
+                down_local "${@}"
+            ;;
+
+        "publish-local-akka-stream-kafka")
+            publish_local_akka_stream_kafka
+          ;;
+
+        "consume-kafka")
+            consume_kafka "${@}"
+          ;;
+    esac
+}
+
+main "${@}"
