@@ -5,15 +5,10 @@ import akka.kafka.scaladsl.Consumer.Control
 import akka.stream._
 import akka.stream.scaladsl._
 import examples.Implicits._
-import examples.avro.HasAvroSchema
 import examples.kafka.{Kafka, TopicName}
-import examples.schemaregistry.SchemaRegistry
 import io.confluent.kafka.serializers.{KafkaAvroDeserializer, KafkaAvroSerializer}
 
 import scala.concurrent.Future
-import scala.util.Try
-
-case class Topic[Key, Value](name: TopicName)
 
 object Topic {
 

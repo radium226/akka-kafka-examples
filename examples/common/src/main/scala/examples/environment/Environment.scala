@@ -9,10 +9,10 @@ import scala.util.Try
 
 object Environment {
 
-  def createTopic[Key:HasAvroSchema, Value:HasAvroSchema](topic: Topic[Key, Value])(implicit actorMaterializer: ActorMaterializer): Try[Unit] = for {
-    _ <- Kafka.createTopicIfNotExists(topic.name)
-    _ <- SchemaRegistry.registerSubjectSchema(s"${topic.name}-key", implicitly[HasAvroSchema[Key]].avroSchema)
-    _ <- SchemaRegistry.registerSubjectSchema(s"${topic.name}-value", implicitly[HasAvroSchema[Value]].avroSchema)
+  def createTopic[Key:HasAvroSchema, Value:HasAvroSchema](topicName: TopicName)(implicit actorMaterializer: ActorMaterializer): Try[Unit] = for {
+    _ <- Kafka.createTopicIfNotExists(topicName)
+    _ <- SchemaRegistry.registerSubjectSchema(s"${topicName}-key", implicitly[HasAvroSchema[Key]].avroSchema)
+    _ <- SchemaRegistry.registerSubjectSchema(s"${topicName}-value", implicitly[HasAvroSchema[Value]].avroSchema)
   } yield ()
 
 }

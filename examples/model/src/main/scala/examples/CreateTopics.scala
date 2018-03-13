@@ -13,9 +13,9 @@ object CreateTopics extends App {
   implicit val actorSystem = ActorSystem()
   implicit val actorMaterializer = ActorMaterializer()
 
-  Environment.createTopic(Topic[String, Login]("login-events"))
-  Environment.createTopic(Topic[String, Logout]("logout-events"))
-  Environment.createTopic(Topic[String, Transfer]("transfer-events"))
+  Environment.createTopic[String, Login]("login-events")
+  Environment.createTopic[String, Logout]("logout-events")
+  Environment.createTopic[String, Transfer]("transfer-events")
 
   actorMaterializer.shutdown()
   actorSystem.terminate()
