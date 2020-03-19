@@ -11,7 +11,7 @@ object Events {
 
   private def source[Event](createEvent: () => Event): Source[Event, Cancellable] = {
     Source.tick(0 second, 1 second, ())
-      .map({ _ => createEvent() })
+        .map({ _ => createEvent() })
   }
 
   def loginSource() = source[Login]({ () =>

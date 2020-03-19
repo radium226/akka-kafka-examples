@@ -14,7 +14,7 @@ object SchemaRegistry extends Logging {
   private val ContentType = "application/vnd.schemaregistry.v1+json"
 
   def updateSubjectCompatibility(subjectName: SubjectName, compatibility: Compatibility): Try[Unit] = {
-    val json = s"""{ "compatibdility":"${compatibility}" }""""
+    val json = s"""{ "compatibility":"${compatibility}" }""""
     val request = sttp
       .put(uri"http://localhost:8081/config/${subjectName}")
       .header("Content-Type", ContentType)

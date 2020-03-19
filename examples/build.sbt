@@ -16,7 +16,7 @@ lazy val commonSettings = Seq(
   }
 )
 
-lazy val root = (project in file("."))
+lazy val examples = (project in file("."))
   .aggregate(common, producer, consumer, model)
 
 lazy val model = (project in file("model"))
@@ -54,3 +54,8 @@ lazy val consumer = (project in file("consumer"))
     assemblyJarName in assembly := "consumer.jar"
   )
   .dependsOn(model, common)
+
+lazy val showcase = (project in file("showcase"))
+  .settings(
+    libraryDependencies += "com.spotify" % "docker-client" % "8.11.2"
+  )
